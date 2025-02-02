@@ -1,6 +1,31 @@
 #!/usr/bin/env bash
-# List all installable versions
-# type: required
+# shellcheck disable=SC1090
+
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (C) 2025 Marko Kungla
+# See the LICENSE file for full licensing details.
+
+# This file is subject to the Apache License Version 2.0, as stated in the LICENSE file
+# at the time of creation. Check Git history for further details.
+
+# -----------------------------------------------------------------------------
+# Script Information
+# -----------------------------------------------------------------------------
+# Description: List all installable versions.
+# Usage: ./latest-stable
+# Author: Marko Kungla
+# Created: 2025-02-02
+# Dependencies: ./lib/asdf-godot.bash
+# ScriptType: Required
+# Notes:
+# URL: https://asdf-vm.com/plugins/create.html#bin-latest-stable
+
+# -----------------------------------------------------------------------------
+# Example Usage
+# -----------------------------------------------------------------------------
+# ./list-all
+#
+# -----------------------------------------------------------------------------
 
 set -euo pipefail
 
