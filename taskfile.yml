@@ -1,0 +1,24 @@
+version: '3'
+
+tasks:
+  # LINT
+  lint:
+    desc: Lint bash scripts
+    cmds:
+      # - task: lint:shellcheck
+      - task: lint:shfmt
+
+  # lint:shellcheck:
+  #   desc: Lint bash scripts with shellcheck
+  #   cmds:
+  #     - scripts/lint-shellcheck.bash
+  lint:shfmt:
+    desc: Lint bash scripts with shfmt
+    cmds:
+      - scripts/lint-shfmt.bash
+
+  # FORMAT
+  fmt:
+    desc: Format bash scripts
+    cmds:
+      - scripts/format.bash
