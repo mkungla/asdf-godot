@@ -5,17 +5,17 @@ tasks:
   lint:
     desc: Lint bash scripts
     cmds:
-      # - task: lint:shellcheck
       - task: lint:shfmt
-
-  # lint:shellcheck:
-  #   desc: Lint bash scripts with shellcheck
-  #   cmds:
-  #     - scripts/lint-shellcheck.bash
+      - task: lint:shellcheck
   lint:shfmt:
     desc: Lint bash scripts with shfmt
     cmds:
       - scripts/lint-shfmt.bash
+  lint:shellcheck:
+    desc: Lint bash scripts with shellcheck
+    cmds:
+      - scripts/lint-shellcheck.bash
+
 
   # FORMAT
   fmt:
