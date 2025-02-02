@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# List all installable versions
+# type: required
+
+set -euo pipefail
+
+current_script_path=${BASH_SOURCE[0]}
+plugin_dir=$(dirname "$(dirname "$current_script_path")")
+
+# shellcheck source=./lib/asdf-godot.bash
+source "${plugin_dir}/lib/asdf-godot.bash"
+
+list_all_versions | sort_versions | xargs echo

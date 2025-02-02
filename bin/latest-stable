@@ -23,7 +23,7 @@ redirect_url=$(curl "${curl_opts[@]}" "$GODOT_STABLE_REPO/releases/latest" | sed
 version=
 printf "redirect url: %s\n" "$redirect_url" >&2
 if [[ "$redirect_url" == "$GODOT_STABLE_REPO/releases" ]]; then
-	version="$(list_all_versions | sort_versions | tail -n1 | xargs echo)"
+	version="$(list_stable_versions | sort_versions | tail -n1 | xargs echo)"
 else
 	version="$(printf "%s\n" "$redirect_url" | sed 's|.*/tag/v\{0,1\}||')"
 fi
