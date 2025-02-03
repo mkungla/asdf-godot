@@ -88,3 +88,33 @@ download_prerelease() {
 	echo "* Downloading Godot pre-release ${version}... ($dl_filename)"
 	curl "${curl_opts[@]}" -o "${ASDF_DOWNLOAD_PATH}/${dl_filename}" -C - "$dl_url" || fail "Failed to download Godot from $dl_url"
 }
+
+install_version() {
+	local install_type="$1"
+	local version="$2"
+	local install_path="${3%/bin}/bin"
+
+	if [ "$install_type" != "version" ]; then
+		fail "asdf-$TOOL_NAME supports release installs only"
+	fi
+
+	(
+		mkdir -p $install_path
+		cp -r ${ASDF_DOWNLOAD_PATH}/* $install_path
+
+		local tool_cmd
+		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
+
+		platform=$(uname | tr '[:upper:]' '[:lower:]')
+		if [ "${platform}" == "darwin" ]; then
+			ln -s "${install_path}/Godot.app/Contents/MacOS/Godot" "$install_path/${tool_cmd}"
+		fi
+
+		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
+		echo "$TOOL_NAME $version installation was successful!"
+	) || (
+		rm -rf "$install_path"
+		fail "An error occurred while installing $TOOL_NAME $version."
+	)
+
+}
