@@ -1,4 +1,32 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1090
+
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (C) 2025 Marko Kungla
+# See the LICENSE file for full licensing details.
+
+# This file is subject to the Apache License Version 2.0, as stated in the LICENSE file
+# at the time of creation. Check Git history for further details.
+
+# -----------------------------------------------------------------------------
+# Script Information
+# -----------------------------------------------------------------------------
+# Description: Godot plugin script
+# Usage: ./asdf-godot.bash
+# Author: Marko Kungla
+# Created: 2025-02-02
+# Dependencies:
+# ScriptType: Source
+# Notes:
+
+# -----------------------------------------------------------------------------
+# Example Usage
+# -----------------------------------------------------------------------------
+# ./asdf-godot.bash
+#
+# -----------------------------------------------------------------------------
+
+set -euo pipefail
 
 TOOL_NAME="godot"
 TOOL_TEST="godot --version"
