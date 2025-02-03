@@ -12,13 +12,13 @@
 # Script Information
 # -----------------------------------------------------------------------------
 # Description: List all installable versions.
-# Usage: ./latest-stable
+# Usage: ./list-all
 # Author: Marko Kungla
 # Created: 2025-02-02
 # Dependencies: ./lib/asdf-godot.bash
 # ScriptType: Required
 # Notes:
-# URL: https://asdf-vm.com/plugins/create.html#bin-latest-stable
+# URL: https://asdf-vm.com/plugins/create.html#bin-list-all
 
 # -----------------------------------------------------------------------------
 # Example Usage

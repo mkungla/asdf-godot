@@ -38,7 +38,8 @@ list_stable_versions() {
 list_preleases_github_tags() {
 	git ls-remote --tags --refs "$GODOT_PRERELEASE_REPO" |
 		grep -o 'refs/tags/.*' | cut -d/ -f3- |
-		sed 's/^v//'
+		sed 's/^v//' |
+		grep -E 'alpha|beta'
 }
 
 # Versions from the official Godot Engine GitHub pre-releases repository
@@ -49,4 +50,41 @@ list_preleases_versions() {
 list_all_versions() {
 	list_stable_github_tags
 	list_preleases_github_tags
+}
+
+get_download_filename() {
+	local version
+	version="$1"
+
+	platform=$(uname | tr '[:upper:]' '[:lower:]')
+	# platform="darwin"
+
+	if [ "${platform}" == 'darwin' ]; then
+		macos_variant_name="macos"
+		echo "Godot_v${version}_macos.universal.zip"
+		exit 0
+	fi
+	arch=$(uname -m)
+
+	echo "Godot_v${version}_${platform}.${arch}.zip"
+}
+
+download_stable_release() {
+	local version dl_filename download_url
+	version="$1"
+	dl_filename="$2"
+	dl_url="${GODOT_STABLE_REPO}/releases/download/${version}/${dl_filename}"
+
+	echo "* Downloading Godot release ${version}... ($dl_filename)"
+	curl "${curl_opts[@]}" -o "${ASDF_DOWNLOAD_PATH}/${dl_filename}" -C - "$dl_url" || fail "Failed to download Godot from $dl_url"
+}
+
+download_prerelease() {
+	local version dl_filename dl_url
+	version="$1"
+	dl_filename="$2"
+	dl_url="${GODOT_PRERELEASE_REPO}/releases/download/${version}/${dl_filename}"
+
+	echo "* Downloading Godot pre-release ${version}... ($dl_filename)"
+	curl "${curl_opts[@]}" -o "${ASDF_DOWNLOAD_PATH}/${dl_filename}" -C - "$dl_url" || fail "Failed to download Godot from $dl_url"
 }
