@@ -4,7 +4,7 @@
 
 [Godot](https://godotengine.org/) plugin for the [asdf version manager](https://asdf-vm.com).
 
-[![Build](https://github.com/mkungla/asdf-godot/actions/workflows/main.yml/badge.svg)](https://github.com/mkungla/asdf-godot/actions/workflows/build.yml)
+[![Build](https://github.com/mkungla/asdf-godot/actions/workflows/main.yml/badge.svg)](https://github.com/mkungla/asdf-godot/actions/workflows/main.yml)
 
 
 Plugin enables you to manage and install multiple versions of Godot Game Engine. You can install both stable and pre-releases of Godot Game Engine
