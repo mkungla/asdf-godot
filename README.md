@@ -1,13 +1,19 @@
 <div align="center">
 
-# asdf-godot [![Build](https://github.com/mkungla/asdf-godot/actions/workflows/build.yml/badge.svg)](https://github.com/mkungla/asdf-godot/actions/workflows/build.yml) [![Lint](https://github.com/mkungla/asdf-godot/actions/workflows/lint.yml/badge.svg)](https://github.com/mkungla/asdf-godot/actions/workflows/lint.yml)
+# asdf-godot 
 
-[godot](https://github.com/mkungla/asdf-godot/documentation) plugin for the [asdf version manager](https://asdf-vm.com).
+[Godot](https://godotengine.org/) plugin for the [asdf version manager](https://asdf-vm.com).
 
+[![Build](https://github.com/mkungla/asdf-godot/actions/workflows/main.yml/badge.svg)](https://github.com/mkungla/asdf-godot/actions/workflows/build.yml)
+
+
+Plugin enables you to manage and install multiple versions of Godot Game Engine. You can install both stable and pre-releases of Godot Game Engine
 </div>
 
 # Contents
 
+- [asdf-godot](#asdf-godot)
+- [Contents](#contents)
 - [Dependencies](#dependencies)
 - [Install](#install)
 - [Contributing](#contributing)
@@ -15,10 +21,8 @@
 
 # Dependencies
 
-**TODO: adapt this section**
+- `bash`, `curl`, `unzip`, and [POSIX utilities](https://pubs.opengroup.org/onlinepubs/9699919799/idx/utilities.html).
 
-- `bash`, `curl`, `tar`, and [POSIX utilities](https://pubs.opengroup.org/onlinepubs/9699919799/idx/utilities.html).
-- `SOME_ENV_VAR`: set this environment variable in your shell config to load the correct version of tool x.
 
 # Install
 
@@ -30,17 +34,17 @@ asdf plugin add godot
 asdf plugin add godot https://github.com/mkungla/asdf-godot.git
 ```
 
-godot:
+**godot:**
 
 ```shell
 # Show all installable versions
-asdf list-all godot
+asdf list all godot
 
 # Install specific version
 asdf install godot latest
 
 # Set a version globally (on your ~/.tool-versions file)
-asdf global godot latest
+asdf set -u godot latest
 
 # Now godot commands are available
 godot --version
