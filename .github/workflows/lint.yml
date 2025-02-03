@@ -12,7 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: asdf-vm/actions/install@v2
-      - run: scripts/lint.bash
+      - run: scripts/lint-shellcheck.bash
+      - run: scripts/lint-shfmt.bash
 
   actionlint:
     runs-on: ubuntu-latest

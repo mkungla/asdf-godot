@@ -39,7 +39,7 @@ plugin_dir=$(dirname "$(dirname "$current_script_path")")
 # shellcheck source=./lib/asdf-godot.bash
 source "${plugin_dir}/lib/asdf-godot.bash"
 
-if [ $ASDF_INSTALL_TYPE != "version" ]; then
+if [ "$ASDF_INSTALL_TYPE" != "version" ]; then
 	fail "only ASDF_INSTALL_TYPE version is supported, got ASDF_INSTALL_TYPE=$ASDF_INSTALL_TYPE"
 fi
 
@@ -68,7 +68,7 @@ fi
 
 mkdir -p "$ASDF_DOWNLOAD_PATH"
 
-download_filename="$(get_download_filename $ASDF_INSTALL_VERSION $found_in_prelease)"
+download_filename="$(get_download_filename "$ASDF_INSTALL_VERSION" "$found_in_prelease")"
 
 # Output where the version was found
 if [ "$found_in_stable" == "yes" ]; then
@@ -80,7 +80,7 @@ fi
 downloaded_archive="$ASDF_DOWNLOAD_PATH/$download_filename"
 echo "Extracting: $download_filename"
 unzip "$downloaded_archive" -d "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $download_filename"
-rm $downloaded_archive
+rm "$downloaded_archive"
 
 platform=$(uname | tr '[:upper:]' '[:lower:]')
 

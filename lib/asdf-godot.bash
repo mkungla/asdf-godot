@@ -60,7 +60,6 @@ get_download_filename() {
 	# platform="darwin"
 
 	if [ "${platform}" == 'darwin' ]; then
-		macos_variant_name="macos"
 		echo "Godot_v${version}_macos.universal.zip"
 		exit 0
 	fi
@@ -70,7 +69,7 @@ get_download_filename() {
 }
 
 download_stable_release() {
-	local version dl_filename download_url
+	local version dl_filename dl_url
 	version="$1"
 	dl_filename="$2"
 	dl_url="${GODOT_STABLE_REPO}/releases/download/${version}/${dl_filename}"
@@ -99,8 +98,8 @@ install_version() {
 	fi
 
 	(
-		mkdir -p $install_path
-		cp -r ${ASDF_DOWNLOAD_PATH}/* $install_path
+		mkdir -p "$install_path"
+		cp -r "${ASDF_DOWNLOAD_PATH}/*" "$install_path"
 
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
@@ -116,5 +115,31 @@ install_version() {
 		rm -rf "$install_path"
 		fail "An error occurred while installing $TOOL_NAME $version."
 	)
+
+}
+
+post_install() {
+	platform=$(uname | tr '[:upper:]' '[:lower:]')
+	if [ "$platform" != "linux" ]; then
+		return
+	fi
+
+	# Potentially we could install these something like "Godot (asdf)"
+	# install -D -m644 icon.svg \
+	#     %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
+	# install -D -m644 misc/dist/linux/%{rdnsname}.desktop \
+	#     %{buildroot}%{_datadir}/applications/%{rdnsname}.desktop
+	# install -D -m644 misc/dist/linux/%{rdnsname}.appdata.xml \
+	#     %{buildroot}%{_datadir}/metainfo/%{rdnsname}.appdata.xml
+	# install -D -m644 misc/dist/linux/%{rdnsname}.xml \
+	#     %{buildroot}%{_datadir}/mime/packages/%{rdnsname}.xml
+	# install -D -m644 misc/dist/linux/%{name}.6 \
+	#     %{buildroot}%{_mandir}/man6/%{name}.6
+	# install -D -m644 misc/dist/shell/%{name}.bash-completion \
+	#     %{buildroot}%{_datadir}/bash-completion/completions/%{name}
+	# install -D -m644 misc/dist/shell/%{name}.fish \
+	#     %{buildroot}%{_datadir}/fish/vendor_completions.d/%{name}.fish
+	# install -D -m644 misc/dist/shell/_%{name}.zsh-completion \
+	#     %{buildroot}%{_datadir}/zsh/site-functions/_%{name}
 
 }

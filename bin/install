@@ -36,3 +36,5 @@ plugin_dir=$(dirname "$(dirname "$current_script_path")")
 source "${plugin_dir}/lib/asdf-godot.bash"
 
 install_version "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+
+post_install

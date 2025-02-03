@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+docs_version="stable"
+
+if [[ -z ${ASDF_INSTALL_VERSION:-} || $ASDF_INSTALL_VERSION != *"stable"* ]]; then
+	docs_version="stable"
+else
+	version_cleaned=${ASDF_INSTALL_VERSION%-stable}
+	major=$(echo "$version_cleaned" | cut -d. -f1)
+	minor=$(echo "$version_cleaned" | cut -d. -f2)
+	docs_version="${major}.${minor}"
+fi
+
+echo "Plugin Repository:            https://github.com/mkungla/asdf-godot"
+echo "Plugin Issues:                https://github.com/mkungla/asdf-godot/issues"
+echo "Godot website:                https://godotengine.org"
+echo "Godot documentation:          https://docs.godotengine.org/en/$docs_version/index.html"
+echo "Godot Repository:             https://github.com/godotengine/godot"
+echo "Godot Pre-Release Repository: https://github.com/godotengine/godot-builds"
+echo "Godot Downloads:              https://godotengine.org/download/"
