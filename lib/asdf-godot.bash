@@ -81,19 +81,29 @@ list_all_versions() {
 }
 
 get_download_filename() {
-	local version
+	local version platform arch join_char
 	version="$1"
 
 	platform=$(uname | tr '[:upper:]' '[:lower:]')
-	# platform="darwin"
+	arch=$(uname -m)
+	join_char="."
 
 	if [ "${platform}" == 'darwin' ]; then
-		echo "Godot_v${version}_macos.universal.zip"
-		exit 0
+		platform="macos"
+		arch="universal"
 	fi
-	arch=$(uname -m)
 
-	echo "Godot_v${version}_${platform}.${arch}.zip"
+	if [[ "$version" =~ -mono$ ]]; then
+		version="${version%-mono}"
+		platform="mono_${platform}"
+
+		# MacOS always uses '.' for separator, even for mono
+		if [ "$arch" != 'universal' ]; then
+			join_char="_"
+		fi
+	fi
+
+	echo "Godot_v${version}_${platform}${join_char}${arch}.zip"
 }
 
 download_stable_release() {
