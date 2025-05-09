@@ -50,20 +50,27 @@ prelease_versions=$(list_preleases_versions)
 # Variables to track where the version was found
 found_in_stable="no"
 found_in_prelease="no"
+found_mono="no"
+base_version="$ASDF_INSTALL_VERSION"
+
+if [[ "$ASDF_INSTALL_VERSION" =~ -mono$ ]]; then
+	found_mono="yes"
+	base_version="${ASDF_INSTALL_VERSION%-mono}"
+fi
 
 # Check if ASDF_INSTALL_VERSION is in stable versions
-if echo "$stable_versions" | grep -q "$ASDF_INSTALL_VERSION"; then
+if echo "$stable_versions" | grep -q "$base_version"; then
 	found_in_stable="yes"
 fi
 
 # Check if ASDF_INSTALL_VERSION is in pre-release versions
-if echo "$prelease_versions" | grep -q "$ASDF_INSTALL_VERSION"; then
+if echo "$prelease_versions" | grep -q "$base_version"; then
 	found_in_prelease="yes"
 fi
 
 # Determine if the version was found in any list
 if [ "$found_in_stable" == "no" ] && [ "$found_in_prelease" == "no" ]; then
-	fail "ERROR: ASDF_INSTALL_VERSION ($ASDF_INSTALL_VERSION) not found in stable or pre-release versions."
+	fail "ERROR: ASDF_INSTALL_VERSION (${base_version}) not found in stable, mono, or pre-release versions."
 fi
 
 mkdir -p "$ASDF_DOWNLOAD_PATH"
@@ -72,9 +79,9 @@ download_filename="$(get_download_filename "$ASDF_INSTALL_VERSION" "$found_in_pr
 
 # Output where the version was found
 if [ "$found_in_stable" == "yes" ]; then
-	download_stable_release "$ASDF_INSTALL_VERSION" "$download_filename"
+	download_stable_release "$base_version" "$download_filename"
 elif [ "$found_in_prelease" == "yes" ]; then
-	download_prerelease "$ASDF_INSTALL_VERSION" "$download_filename"
+	download_prerelease "$base_version" "$download_filename"
 fi
 
 downloaded_archive="$ASDF_DOWNLOAD_PATH/$download_filename"
@@ -83,9 +90,19 @@ unzip "$downloaded_archive" -d "$ASDF_DOWNLOAD_PATH" || fail "Could not extract 
 rm "$downloaded_archive"
 
 platform=$(uname | tr '[:upper:]' '[:lower:]')
+install_platform="${platform}"
+
+if [ "$found_mono" == "yes" ]; then
+	install_platform="mono_${platform}"
+fi
 
 if [ "$platform" == "linux" ]; then
 	arch=$(uname -m)
-	extracted_bin_name="Godot_v${ASDF_INSTALL_VERSION}_${platform}.${arch}"
+	base_name="Godot_v${base_version}_${install_platform}"
+	extracted_bin_name="${base_name}.${arch}"
+	if [ "$found_mono" == "yes" ]; then
+		mv "${ASDF_DOWNLOAD_PATH}/${base_name}_${arch}"/* "${ASDF_DOWNLOAD_PATH}/"
+		rmdir "${ASDF_DOWNLOAD_PATH}/${base_name}_${arch}"
+	fi
 	mv "${ASDF_DOWNLOAD_PATH}/${extracted_bin_name}" "${ASDF_DOWNLOAD_PATH}/godot"
 fi
