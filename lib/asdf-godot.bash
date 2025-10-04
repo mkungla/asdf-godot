@@ -71,8 +71,9 @@ sort_versions() {
     }
     subnum = 0
     if (type_num != 5) {
-      if (match(suffix, /([0-9]+)$/, a)) {
-        subnum = a[1] + 0
+      temp = suffix
+      if (match(temp, /[0-9]+$/)) {
+        subnum = substr(temp, RSTART) + 0
       }
     }
     key = sprintf("%02d%02d%02d%01d%03d", major, minor, patch, type_num, subnum)
