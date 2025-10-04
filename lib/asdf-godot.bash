@@ -46,8 +46,39 @@ fail() {
 }
 
 sort_versions() {
-	sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' |
-		LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
+	awk '
+  {
+    version = $0
+    if (index(version, "-")) {
+      pos = index(version, "-")
+      base = substr(version, 1, pos - 1)
+      suffix = substr(version, pos + 1)
+    } else {
+      base = version
+      suffix = ""
+    }
+    num_parts = split(base, parts, ".")
+    major = (num_parts >= 1 ? parts[1] + 0 : 0)
+    minor = (num_parts >= 2 ? parts[2] + 0 : 0)
+    patch = (num_parts >= 3 ? parts[3] + 0 : 0)
+    type_num = (suffix == "" || suffix == "stable" ? 5 : 0)
+    if (type_num == 0) {
+      if (match(suffix, /^dev/)) type_num = 1
+      else if (match(suffix, /^alpha/)) type_num = 2
+      else if (match(suffix, /^beta/)) type_num = 3
+      else if (match(suffix, /^rc/)) type_num = 4
+      else type_num = 6  # Unknown (post-stable)
+    }
+    subnum = 0
+    if (type_num != 5) {
+      if (match(suffix, /([0-9]+)$/, a)) {
+        subnum = a[1] + 0
+      }
+    }
+    key = sprintf("%02d%02d%02d%01d%03d", major, minor, patch, type_num, subnum)
+    print key "|" version
+  }
+  ' | LC_ALL=C sort -t'|' -k1,1 | awk -F'|' '{print $2}'
 }
 
 # Get tags from the official Godot Engine GitHub repository
@@ -66,8 +97,8 @@ list_stable_versions() {
 list_preleases_github_tags() {
 	git ls-remote --tags --refs "$GODOT_PRERELEASE_REPO" |
 		grep -o 'refs/tags/.*' | cut -d/ -f3- |
-		sed 's/^v//' |
-		grep -E 'alpha|beta'
+		sed 's/^v//'
+	# grep -E 'alpha|beta'
 }
 
 # Versions from the official Godot Engine GitHub pre-releases repository
