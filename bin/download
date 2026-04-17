@@ -53,6 +53,16 @@ found_in_prelease="no"
 found_mono="no"
 base_version="$ASDF_INSTALL_VERSION"
 
+if [ "$ASDF_INSTALL_VERSION" = "latest" ]; then
+	base_version="$(list_stable_versions | sort_versions | tail -n1 | xargs echo)"
+	ASDF_INSTALL_VERSION="$base_version"
+fi
+
+if [ "$ASDF_INSTALL_VERSION" = "latest-mono" ]; then
+	base_version="$(list_stable_versions | sort_versions | tail -n1 | xargs echo)"
+	ASDF_INSTALL_VERSION="${base_version}-mono"
+fi
+
 if [[ "$ASDF_INSTALL_VERSION" =~ -mono$ ]]; then
 	found_mono="yes"
 	base_version="${ASDF_INSTALL_VERSION%-mono}"
