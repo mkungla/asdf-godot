@@ -44,6 +44,9 @@ jobs:
         if: ${{ runner.os == 'macOS' }}
         run: brew install coreutils
 
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
       - name: Install asdf & tools
         uses: asdf-vm/actions/install@v4
 
