@@ -82,6 +82,19 @@ sort_versions() {
   ' | LC_ALL=C sort -t'|' -k1,1 | awk -F'|' '{print $2}'
 }
 
+normalize_arch() {
+	local arch
+	arch=$(uname -m)
+
+	if [ "$arch" = "aarch64" ]; then
+		arch="arm64"
+	elif [ "$arch" = "armv71" ]; then
+		arch="arm32"
+	fi
+
+	echo "$arch"
+}
+
 # Get tags from the official Godot Engine GitHub repository
 list_stable_github_tags() {
 	git ls-remote --tags --refs "$GODOT_STABLE_REPO" |
@@ -117,7 +130,7 @@ get_download_filename() {
 	version="$1"
 
 	platform=$(uname | tr '[:upper:]' '[:lower:]')
-	arch=$(uname -m)
+	arch=$(normalize_arch)
 	join_char="."
 
 	if [ "${platform}" == 'darwin' ]; then

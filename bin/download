@@ -97,7 +97,7 @@ if [ "$found_mono" == "yes" ]; then
 fi
 
 if [ "$platform" == "linux" ]; then
-	arch=$(uname -m)
+	arch=$(normalize_arch)
 	base_name="Godot_v${base_version}_${install_platform}"
 	extracted_bin_name="${base_name}.${arch}"
 	if [ "$found_mono" == "yes" ]; then
