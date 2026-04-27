@@ -189,7 +189,13 @@ install_version() {
 
 		platform=$(uname | tr '[:upper:]' '[:lower:]')
 		if [ "${platform}" == "darwin" ]; then
-			ln -s "${install_path}/Godot.app/Contents/MacOS/Godot" "$install_path/${tool_cmd}"
+			local app_name
+			app_name="Godot.app"
+			if [[ "$version" =~ -mono$ ]]; then
+				app_name="Godot_mono.app"
+			fi
+
+			ln -s "${install_path}/${app_name}/Contents/MacOS/Godot" "$install_path/${tool_cmd}"
 		fi
 
 		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
