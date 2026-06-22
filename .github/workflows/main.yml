@@ -10,7 +10,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: asdf-vm/actions/install@v4
       - run: scripts/lint-shellcheck.bash
       - run: scripts/lint-shfmt.bash
@@ -18,7 +18,7 @@ jobs:
   actionlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Check workflow files
         uses: docker://rhysd/actionlint:1.7.7
         with:
@@ -45,7 +45,7 @@ jobs:
         run: brew install coreutils
 
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install asdf & tools
         uses: asdf-vm/actions/install@v4
